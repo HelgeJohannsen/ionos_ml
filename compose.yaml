@@ -17,7 +17,7 @@ services:
       - traefik.http.routers.ml.entrypoints=websecure
       - traefik.http.routers.ml.tls.certresolver=letsencrypt
  #   - traefik.http.services.ebike.loadbalancer.server.port=3000
-    restart: unless-stoped
+    restart: unless-stopped
     networks:
       - web    
 # might be needed, but seems to work without
@@ -27,7 +27,7 @@ services:
     container_name: motorland_db
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW --skip-innodb-read-only-compressed
     image: mariadb:10
-    restart: unless-stoped
+    restart: unless-stopped
     volumes:
       - ../dbData:/var/lib/mysql
     environment:
