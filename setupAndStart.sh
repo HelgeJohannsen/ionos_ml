@@ -1,1 +1,2 @@
-"npm", "run", "setup"
+npx prisma migrate deploy
+npm run start
