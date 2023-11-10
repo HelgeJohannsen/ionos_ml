@@ -4,7 +4,6 @@ import { createOrder, getOrder } from "../models/order.server";
 import { getCheckout } from "../models/checkout.server";
 
 import { z } from "zod"
-import { getGraphqlClient } from "../utils/shopify/getGraphqlClient";
 
 import { webbhook_oredersCreate } from "../utils/shopify/webhooks/ordersCreate"
 import { webbhook_oredersCancel } from "~/utils/shopify/webhooks/ordersCancel";

@@ -2,7 +2,6 @@ import type { LoaderArgs } from "@remix-run/node";
 import { getCheckout, createCheckoutState, checkoutAddTransactionId, getCheckoutByTransactionId } from "../models/checkout.server";
 import { checkNotifyHash, consorsNotification } from "../utils/consors/notification";
 import { z } from "zod"
-import { getGraphqlClient } from "../utils/shopify/getGraphqlClient";
 import { authenticate } from "../shopify.server";
 import { orderMarkAsPaid } from "~/utils/graphql/markAsPaid";
 import { addTags } from "~/utils/graphql/orderTags";

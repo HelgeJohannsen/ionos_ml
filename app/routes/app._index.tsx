@@ -19,45 +19,14 @@ import {
 } from "@shopify/polaris";
 
 import { createConfig, getOrCreateConfig } from "../models/config.server";
-import { getGraphqlClient } from "../utils/shopify/getGraphqlClient"
 import { DiamondAlertMajor, ImageMajor } from "@shopify/polaris-icons";
 import { useState } from "react";
 import { addTags } from "~/utils/graphql/orderTags";
 
 export async function loader({ request }) {
-/*   await getGraphqlClient("helge-test.myshopify.com").then(client => 
-    client.query({data:{
-      query: `mutation orderUpdate($input: OrderInput!) {
-        orderUpdate(input: $input) {
-          order {
-            id
-            tags
-            unpaid
-          }
-          userErrors {
-            field
-            message
-          }
-        }
-      }`,
-      variables:{
-          "input": {
-            "id": "gid://shopify/Order/5570297856279",
-            "tags": [
-              "Consors"
-            ]
-          }
-      }
-    }
-  })
-  ).then( response => {
-    console.log("other query headers: ",response.headers)
-    console.log("other query body: ",response.body)
-  }) */
-  addTags("helge-test.myshopify.com","gid://shopify/Order/5570452160791", "Nice")
   const { admin, session } = await authenticate.admin(request);
   const Settings = await getOrCreateConfig(session.shop);
-
+  
   return Settings;
 }
 

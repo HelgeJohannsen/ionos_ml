@@ -1,4 +1,3 @@
-import { getGraphqlClient } from "../../../utils/shopify/getGraphqlClient";
 import { setOrderId, getCheckout, getCheckoutByOrderId } from "../../../models/checkout.server";
 
 import { getConsorsused, getPaymentState, getTransactionId } from "../../../utils/graphql/orderMetafields";
