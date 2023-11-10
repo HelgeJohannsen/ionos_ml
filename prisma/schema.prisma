@@ -6,13 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:dev.sqlite"
-  //provider = "postgresql"
-  // url = env(DATABASE_URL)
-  //url      = "postgres://uo55cfadefhad:p7d0defdc5625fac03cf1a0dcabaacd196f526411cb57edecd6f35a3691984489@ec2-35-172-55-62.compute-1.amazonaws.com:5432/d580g5mna3dmed"
-  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
- // shadowDatabaseUrl = "postgres://bvpuncfrwtnwcd:75ef0a709ea588c37b94ba056ba7a363fd5ed066e580c941c9d2eed7ee1c95e9@ec2-44-207-60-135.compute-1.amazonaws.com:5432/d9ngdjsk9tt3s7"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model ShopifyOrderCreatedUnhandled{

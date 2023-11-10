@@ -1,3 +1,17 @@
+# For development
+
+To set the env Var:
+```bash
+set DATABASE_URL=mysql://root:oY8io2Shshoo9Eix@localhost:3306/devDb
+```
+
+to start up the dev db:
+```bash
+docker compose -f devDB.compose.yml
+```
+
+
+
 # Shopify App Template - Remix
 
 This is a template for building a [Shopify app](https://shopify.dev/docs/apps/getting-started) using the [Remix](https://remix.run) framework.
