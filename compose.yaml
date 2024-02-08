@@ -7,8 +7,8 @@ services:
     environment:
       SHOPIFY_APP_URL: "https://ml.cpro-server.de"
       HOST: "0.0.0.0"
-      SHOPIFY_API_KEY: "f38f2da81dece49ce463c284bd50f846"
-      SHOPIFY_API_SECRET: "0063b2ed42cf05e38384e671d5bf9d7b"
+      SHOPIFY_API_KEY: "ca1e1c3d0c4afdd264ed55f280e21d29"
+      SHOPIFY_API_SECRET: "dfef16e2eb08e1adbc43543a36429974"
       SCOPES: "write_products,write_orders,read_orders"
       DATABASE_URL: "mysql://root:oY8io2Shshoo9Eix@motorland_db:3306/motorland" # TODO: change me for new instance
     labels:
