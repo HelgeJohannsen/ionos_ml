@@ -2,7 +2,7 @@ import { getCheckout, getCheckoutByOrderId } from "../../../models/checkout.serv
 import { z } from "zod"
 import { getConsorsClient } from "../../consors/api";
 
-import { createShopifyOrderCancelUnhandled } from "~/models/ShopifyOrderCancel.server";
+import { createShopifyOrderCancelUnhandled, incrementCounterShopifyOrderCancelUnhandled } from "~/models/ShopifyOrderCancel.server";
 
 const orderCreated = z.object({
   id: z.number(),
@@ -20,6 +20,8 @@ export async function webbhook_oredersCancel(shop: string, payload: unknown){
     console.log("Cancel order because it is Consors Finanzierung:", orderData)
   const createdShopifyOrderCancelUnhandled = await createShopifyOrderCancelUnhandled(shop, orderData.id, orderData.admin_graphql_api_id, orderData.current_total_price)
   console.log("createdShopifyOrderCanceldUnhandled", createdShopifyOrderCancelUnhandled)
+  }else{
+    console.log("keine Consors Finanzierung")
   }
 }
 
@@ -29,14 +31,27 @@ interface OrderQueueEntry{
   admin_graphql_api_id: string;
   current_total_price: string;
   createdAt: Date;
+  counter: number
 }
 
-export async function handleOrderCancelQueue({shop, orderId, admin_graphql_api_id }: OrderQueueEntry){
+export async function handleOrderCancelQueue({shop, orderId, admin_graphql_api_id, counter, createdAt }: OrderQueueEntry){
   console.log("handling orderCancelQueue Entry")
-  const oderId = BigInt(admin_graphql_api_id.split("Order/")[1])
+  
+  const runAt = new Date(createdAt.getTime())
+
+  runAt.setHours(runAt.getHours()+counter)
+
+  if(runAt.getTime()>Date.now()){
+    console.log("skipping orderCancelQueue entry")
+    return false
+  }
+
+  await incrementCounterShopifyOrderCancelUnhandled(orderId)
+
+  const oderId = admin_graphql_api_id.split("Order/")[1]
   console.log("orderId from db", oderId)
-  const checkout = await getCheckoutByOrderId(oderId)
-  if(checkout == null){
+  const checkout = await getCheckout(oderId)
+  if(!checkout){
     console.error("no checkout with given uuid in database", oderId)
     return undefined
   }
@@ -46,11 +61,11 @@ export async function handleOrderCancelQueue({shop, orderId, admin_graphql_api_i
     const transaction_id = checkout.transaction_id
     const response = await getConsorsClient(shop)
       .then(consorsClient => consorsClient?.stornoOrder(transaction_id))
-      if(response === undefined){
-        console.error(`No consors Client for shop ${shop}`)  
-        return false
-      }else if(response.status != 200){
-      console.error(`non 200 response(${response.status}) from consorsApi.CancelOrder : `, response.text())
+    if(response === undefined){
+      console.error(`No consors Client for shop ${shop}`)  
+      return false
+    }else if(response.status < 200 || response.status >= 300 ){
+      console.error(`non 2xx response(${response.status}) from consorsApi.stornoOrder : `, await response.text())
       return false
     }else{
       return true
